@@ -15,7 +15,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     json (1.8.3)
     multipart-post (2.0.0)
-    odania (0.0.30)
+    odania (0.0.31)
       deep_merge
       diplomat
       erubis
