@@ -4,6 +4,7 @@ require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 
 require 'odania'
+require_relative '../lib/varnish'
 require_relative 'support/consul_mock'
 
 

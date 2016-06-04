@@ -5,6 +5,8 @@ gem 'rspec'
 gem 'ruby-lint'
 gem 'odania'
 gem 'codeclimate-test-reporter', require: false
+gem 'guard'
+gem 'guard-rspec'
 
 # Parse uri
 gem 'public_suffix'
