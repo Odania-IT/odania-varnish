@@ -8,7 +8,7 @@ sub vcl_recv {
 
 	<% %w(web assets).each do |type| %>
 		<% general_subdomain[type].each_pair do |url, page| %>
-			if (req.url ~ "^<%= prepare_url url %>") {
+			if (req.url ~ "<%= url %>") {
 				std.log("general page identified Page:'<%= url %>':" + req.url);
 
 				set req.backend_hint = <%= page.director %>.backend();

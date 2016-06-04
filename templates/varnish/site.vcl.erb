@@ -20,11 +20,11 @@ sub vcl_recv {
 			}
 		<% end %>
 
-		<% subdomain = domain.subdomains['_general'] %>
+		<% general_subdomain = domain.subdomains['_general'] %>
 		<% %w(web assets).each do |type| %>
-			<% subdomain[type].each_pair do |url, page| %>
-				if (req.url ~ "^<%= prepare_url url %>") {
-					std.log("page identified '<%= subdomain.name %>.<%= domain.name %>' Page:'<%= url %>':" + req.url);
+			<% general_subdomain[type].each_pair do |url, page| %>
+				if (req.url ~ "<%= url %>") {
+					std.log("[<%= type %>] page identified '<%= general_subdomain.name %>.<%= domain.name %>' Page:'<%= url %>':" + req.url);
 
 					set req.backend_hint = <%= page.director %>.backend();
 					<% unless page.plugin_url.nil? %>set req.url = "<%= page.plugin_url %>";<% end %>
@@ -41,8 +41,8 @@ sub vcl_recv {
 
 	 			<% %w(web assets).each do |type| %>
 					<% subdomain[type].each_pair do |url, page| %>
-						if (req.url ~ "^<%= prepare_url url %>") {
-							std.log("page identified '<%= subdomain.name %>.<%= domain.name %>' Page:'<%= url %>':" + req.url);
+						if (req.url ~ "<%= url %>") {
+							std.log("[<%= type %>] page identified '<%= subdomain.name %>.<%= domain.name %>' Page:'<%= url %>':" + req.url);
 
 							set req.backend_hint = <%= page.director %>.backend();
 							<% unless page.plugin_url.nil? %>set req.url = "<%= page.plugin_url %>";<% end %>

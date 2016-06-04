@@ -33,11 +33,6 @@ module Varnish
 			false
 		end
 
-		def prepare_url(url)
-			return "/#{url}" unless '/'.eql? url[0]
-			url
-		end
-
 		def general_subdomain
 			self.domain['_general']
 		end
