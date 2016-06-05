@@ -21,7 +21,6 @@ module Varnish
 
 			# Domain information config
 			domains = global_config.domains
-			default_subdomains = global_config.default_subdomains
 
 			# Generate catch all vcl
 			gen = GenerateCatchAllVcl.new
@@ -36,7 +35,7 @@ module Varnish
 			gen.write(out_dir)
 
 			# Generate vcl_recv
-			gen = GenerateSitesVcl.new(domains, default_subdomains)
+			gen = GenerateSitesVcl.new(domains)
 			gen.write(out_dir)
 
 			# Generate global redirects

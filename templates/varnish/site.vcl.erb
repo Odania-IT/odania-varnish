@@ -7,8 +7,10 @@ vcl 4.0;
 
 <% if generates_varnish_config? %>
 sub vcl_recv {
+	<% unless '_general'.eql? domain.name %>
 	std.log("pre varnish log info '<%= domain.name %>':" + req.http.host);
 	if (req.http.host ~ "<%= domain.name %>$") {
+	<% end %>
 		std.log("varnish log info '<%= domain.name %>':" + req.http.host);
 
 		# General part
@@ -21,7 +23,7 @@ sub vcl_recv {
 		<% end %>
 
 		<% general_subdomain = domain.subdomains['_general'] %>
-		<% %w(web assets).each do |type| %>
+		<% %w(web assets layout_assets).each do |type| %>
 			<% general_subdomain[type].each_pair do |url, page| %>
 				if (req.url ~ "<%= url %>") {
 					std.log("[<%= type %>] page identified '<%= general_subdomain.name %>.<%= domain.name %>' Page:'<%= url %>':" + req.url);
@@ -39,7 +41,7 @@ sub vcl_recv {
 			<%= is_first ? '' : 'else ' %>if (req.http.host ~ "^<%= subdomain.name %>.<%= domain.name %>$") {
 				std.log("subdomain identified '<%= subdomain.name %>.<%= domain.name %>':" + req.http.host + " url: " + req.url );
 
-	 			<% %w(web assets).each do |type| %>
+	 			<% %w(web assets layout_assets).each do |type| %>
 					<% subdomain[type].each_pair do |url, page| %>
 						if (req.url ~ "<%= url %>") {
 							std.log("[<%= type %>] page identified '<%= subdomain.name %>.<%= domain.name %>' Page:'<%= url %>':" + req.url);
@@ -62,7 +64,10 @@ sub vcl_recv {
 			}
 			<% is_first = false %>
 		<% end %>
+
+	<% unless '_general'.eql? domain.name %>
 	}
+	<% end %>
 }
 
 sub vcl_deliver {

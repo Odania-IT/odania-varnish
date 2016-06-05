@@ -2,11 +2,10 @@ require_relative 'generate_site_vcl'
 
 module Varnish
 	class GenerateSitesVcl
-		attr_accessor :domains, :template, :default_subdomains
+		attr_accessor :domains, :template
 
-		def initialize(domains, default_subdomains)
+		def initialize(domains)
 			self.domains = domains
-			self.default_subdomains = default_subdomains
 			self.template = File.new("#{VARNISH_BASE_DIR}/templates/varnish/sites.vcl.erb").read
 		end
 
@@ -19,7 +18,7 @@ module Varnish
 
 			Dir.mkdir "#{out_dir}/sites" unless File.directory? "#{out_dir}/sites"
 			self.domains.each_pair do |_domain_name, domain|
-				out = GenerateSiteVcl.new(domain, default_subdomains)
+				out = GenerateSiteVcl.new(domain)
 				out.write out_dir
 			end
 		end

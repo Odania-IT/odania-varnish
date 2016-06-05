@@ -1,11 +1,10 @@
 module Varnish
 	class GenerateSiteVcl
-		attr_accessor :domain, :template, :default_subdomains
+		attr_accessor :domain, :template, :default_domains, :valid_domains
 
-		def default_subdomain_for(domain)
-			return self.default_subdomains[domain.name] unless self.default_subdomains[domain.name].nil?
-			return self.default_subdomains['_general'] unless self.default_subdomains['_general'].nil?
-			'www'
+		def initialize(domain)
+			self.domain = domain
+			self.template = File.new("#{VARNISH_BASE_DIR}/templates/varnish/site.vcl.erb").read
 		end
 
 		def template_url_for(domain, page)
@@ -25,23 +24,8 @@ module Varnish
 			false
 		end
 
-		def generates_general_varnish_config?
-			subdomain = general_subdomain
-			return true unless subdomain.get_redirects.empty?
-			return true unless subdomain.assets.empty?
-			return true unless subdomain.web.empty?
-			false
-		end
-
 		def general_subdomain
 			self.domain['_general']
-		end
-
-		def initialize(domain, default_subdomains)
-			self.domain = domain
-			self.default_subdomains = default_subdomains
-			self.template = File.new("#{VARNISH_BASE_DIR}/templates/varnish/site.vcl.erb").read
-			self.template = File.new("#{VARNISH_BASE_DIR}/templates/varnish/general_site.vcl.erb").read if '_general'.eql? domain.name
 		end
 
 		def render
