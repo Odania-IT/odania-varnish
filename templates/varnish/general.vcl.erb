@@ -22,6 +22,10 @@ sub vcl_recv {
 			std.log("template page identified! Page:" + req.url);
 			set req.backend_hint = core_backend_director.backend();
 			return (hash);
+		} else if (req.url ~ "^/template/list_view") {
+			std.log("list_view page identified! Page:" + req.url);
+			set req.backend_hint = core_backend_director.backend();
+			return (hash);
 		}
 	}
 
