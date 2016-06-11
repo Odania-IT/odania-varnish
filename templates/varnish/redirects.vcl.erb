@@ -3,8 +3,9 @@ vcl 4.0;
 # local test: <%= LOCAL_TEST_MODE ? 'ENABLED' : 'DISABLED' %>
 
 sub vcl_recv {
+	std.log("Checking redirects for: " + req.http.host);
 	<% redirects.each_pair do |src, target| %>
-	if (req.http.host == "<%= src %>") {
+	if (req.http.host ~ "<%= src %>") {
 		set req.http.Location = "<%= target %>";
 		return (synth(750, "Permanently moved"));
 	}
