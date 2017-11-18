@@ -1,13 +1,7 @@
-FROM odaniait/docker-varnish:latest
+FROM alpine:3.6
 MAINTAINER Mike Petersen <mike@odania-it.de>
 
-COPY docker/runit_varnish.sh /etc/service/varnish/run
-
-RUN mkdir -p /srv/odania
-COPY . /srv/odania
-WORKDIR /srv/odania
-RUN bundle install
-
-VOLUME ["/srv/odania"]
-
-ENV OUT_DIR /etc/varnish
+RUN apk update && apk add --no-cache varnish vim
+COPY default.vcl /etc/varnish/default.vcl
+COPY varnish-secret /varnish-secret
+CMD ["varnishd", "-j", "unix,user=varnish", "-F", "-a", "0.0.0.0:80", "-f", "/etc/varnish/default.vcl", "-S", "/varnish-secret", "-T", ":9876"]
