@@ -1,7 +1,12 @@
 FROM odaniait/docker-varnish:latest
 MAINTAINER Mike Petersen <mike@odania-it.de>
 
-COPY docker/runit_varnish.sh /etc/service/varnish/run
+# install dependencies
+RUN apt-get update && \
+	apt-get install -y bundler libxml2-dev && \
+	apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+COPY docker/varnish.sh /varnish.sh
 
 RUN mkdir -p /srv/odania
 COPY . /srv/odania
