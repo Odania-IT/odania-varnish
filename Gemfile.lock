@@ -197,7 +197,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (10.5.0)
+    rake (12.3.3)
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -259,7 +259,7 @@ DEPENDENCIES
   guard-rspec
   odania
   public_suffix
-  rake (< 11.0)
+  rake (< 12.3.4)
   rspec
   ruby-lint
 
